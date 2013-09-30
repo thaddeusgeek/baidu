@@ -1,6 +1,7 @@
 require 'baidu'
 #请根据自己实际情况填写
 BAIDU_MAP_KEY = ''
+$search_word = ''
 $username = ''
 $password =''
 $token =''

@@ -1,5 +1,10 @@
-require "baidu/version"
-
 module Baidu
-  # Your code goes here...
+  module Rank
+  end
+  module SEM
+  end
 end
+require "baidu/version"
+require "baidu/map"
+require "baidu/sem"
+require "baidu/rank"

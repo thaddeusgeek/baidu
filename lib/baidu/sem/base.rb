@@ -39,9 +39,7 @@ module Baidu
           :example_body => operation.example_body
         }
         else
-          {
-            :example_body => operation.example_body
-          }
+          operation.example_body
         end
       end
 

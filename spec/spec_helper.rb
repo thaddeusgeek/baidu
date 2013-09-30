@@ -1,11 +1,13 @@
 require 'baidu'
 #请根据自己实际情况填写
 BAIDU_MAP_KEY = ''
-$search_word = ''
+$searchWord = ''
+$searchAdgroupName = ''
+$searchCampaignName = ''
 $username = ''
-$password =''
-$token =''
-$debug = true
+$password = ''
+$token = ''
+# $debug = true
 $portfolio_ids = %w()
 $campaign_ids = %w(  )
 $adgroup_ids = %w(  )

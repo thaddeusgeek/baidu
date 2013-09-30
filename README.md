@@ -15,8 +15,28 @@ And then execute:
 Or install it yourself as:
 
     $ gem install baidu
+## Rspec
+先修改spec/spec_helper.rb
+
+```ruby
+BAIDU_MAP_KEY = ''
+$searchWord = ''
+$searchAdgroupName = ''
+$searchCampaignName = ''
+$username = ''
+$password = ''
+$token = ''
+# $debug = true
+$portfolio_ids = %w()
+$campaign_ids = %w(  )
+$adgroup_ids = %w(  )
+$keyword_ids = %w(  )
+$startDate = (Time.now - 24*3600).utc.iso8601
+$endDate = Time.now.utc.iso8601
+```
 
 ## Usage
+
 
 
 返回码 定义 英文返回描述

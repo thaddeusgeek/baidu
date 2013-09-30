@@ -1,6 +1,8 @@
 # Baidu
 
-TODO: Write a gem description
+Baidu SEM Services
+Baidu Ranking Services
+Baidu Map Services
 
 ## Installation
 
@@ -15,6 +17,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install baidu
+
 ## Rspec
 先修改spec/spec_helper.rb
 
@@ -36,9 +39,17 @@ $endDate = Time.now.utc.iso8601
 ```
 
 ## Usage
+```ruby
+require 'baidu'
+ss = Baidu::SEM::SearchService.new
+ss.username = ''
+ss.password = ''
+ss.token = ''
+ss.debug = false
+res = ss.getKeywordBySearch({:searchWord=>'word',:searchType=>0})
+```
 
-
-
+```
 返回码 定义 英文返回描述
 0 正常 ok
 2 请求参数非法 Parameter Invalid
@@ -57,7 +68,7 @@ puts map.get(39.911031821584,116.44931548023).for(1000).bus
 puts map.geo('22.53','113.38')
 Baidumap.get_baike('北京站')
 Baidumap.get_cityid('北京') #=>131
-
+```
 ## Contributing
 
 1. Fork it

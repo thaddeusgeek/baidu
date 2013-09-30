@@ -3,7 +3,6 @@ module Baidu
     class AccountService < Base
       def getAccountInfo
         operation = make_operation('getAccountInfo')
-        puts operation_header
 
         operation.header = operation_header
         operation.body = {
@@ -13,13 +12,20 @@ module Baidu
         }
 
         response = operation.call
-        # p response
         if @debug
           puts operation.build
         end
-
+        response.body
       end
-      def updateAccountInfo
+
+      def updateAccountInfo(accountInfoType)
+        operation = make_operation('updateAccountInfo')
+        operation.header = operation_header
+        operation.body = {
+          :updateAccountInfoRequest =>{
+            :accountInfoType => accountInfoType
+          }
+        }
       end
     end
   end

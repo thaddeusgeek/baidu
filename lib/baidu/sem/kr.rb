@@ -1,9 +1,9 @@
 module Baidu
   module SEM
     class KR < Base
-      def GetAdGroupBySeedWords
+      # def GetAdGroupBySeedWords
 
-      end
+      # end
     end
   end
 end

@@ -4,14 +4,42 @@ module Baidu
       attr_accessor :username,:password,:token
       attr_accessor :debug
 
-      def initialize
+      def initialize(auth)
         classname = self.class.name.split('::').last
         @service_name = classname
         @port_name = classname
+        @username = auth.username
+        @password = auth.password
+        @token = auth.token
         @client = Savon.new("https://api.baidu.com/sem/sms/v3/#{classname}?wsdl")
         # Savon.new(@base_uri+service_name+'?wsdl')
       end
-
+      def method_missing(name, *args, &block)
+        p name if debug
+        options,debug = args[0],args[1]
+        options = {} if options.nil?
+        name = name.to_s
+        # p args if name == 'getAllAdgroupId'
+        name_snake = name.snake_case
+        name_request_sym = (name+'Request').to_sym
+        name_response_sym = (name+'Response').snake_case.to_sym
+        operation = make_operation(name)
+        operation.header = operation_header
+        operation.body = {
+          name_request_sym => options
+        }
+        ap operation.body if debug
+        puts operation.build if debug
+        response = operation.call
+        ap response if debug
+        # ap response.failures if debug
+        if response.failures
+          raise response.failures.to_s
+        else
+          response = response.body[name_response_sym]
+          response
+        end
+      end
       def operations
         @client.operations(@service_name,@port_name)
       end

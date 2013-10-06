@@ -1,33 +1,33 @@
 module Baidu
   module SEM
     class CreativeService < Base
-      def getCreativeIdByAdgroupId
+      # def getCreativeIdByAdgroupId
 
-      end
-      def getCreativeByAdgroupId
+      # end
+      # def getCreativeByAdgroupId
 
-      end
-      def getCreativeByCreativeId
+      # end
+      # def getCreativeByCreativeId
 
-      end
-      def addCreative
+      # end
+      # def addCreative
 
-      end
-      def updateCreative
+      # end
+      # def updateCreative
 
-      end
-      def deleteCreative
+      # end
+      # def deleteCreative
 
-      end
-      def activateCreative
+      # end
+      # def activateCreative
 
-      end
-      def getCreativeStatus
+      # end
+      # def getCreativeStatus
 
-      end
-      def getCreativeStatusZip
+      # end
+      # def getCreativeStatusZip
 
-      end
+      # end
     end
   end
 end

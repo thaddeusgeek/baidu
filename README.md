@@ -69,6 +69,8 @@ puts map.geo('22.53','113.38')
 Baidumap.get_baike('北京站')
 Baidumap.get_cityid('北京') #=>131
 ```
+## TODO
+自动检测帐号，不用人工设定计划单元id
 ## Contributing
 
 1. Fork it

@@ -1,6 +1,6 @@
 module Baidu
   module SEM
-    class CampaignSerivce < Base
+    class CampaignService < Base
       # def addCampaign(options)
       #   operation = make_operation('addCampaign')
       #   operation.header = operation_header

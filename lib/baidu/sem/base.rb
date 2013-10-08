@@ -15,13 +15,11 @@ module Baidu
         # Savon.new(@base_uri+service_name+'?wsdl')
       end
       def method_missing(name, *args, &block)
-        p name if debug
         options,debug = args[0],args[1]
         options = {} if options.nil?
         name = name.to_s
-        # p args if name == 'getAllAdgroupId'
         name_snake = name.snake_case
-        name_request_sym = (name+'Request').to_sym
+        name_request_sym = (name+'Request').to_sym #if %w(getCampaignByCampaignId getAllCampaign addCampaign updateCampaign deleteCampaign).include?name
         name_response_sym = (name+'Response').snake_case.to_sym
         operation = make_operation(name)
         operation.header = operation_header
@@ -36,7 +34,7 @@ module Baidu
         if response.failures
           raise response.failures.to_s
         else
-          response = response.body[name_response_sym]
+          response.body = response.body[name_response_sym]
           response
         end
       end

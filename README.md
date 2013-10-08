@@ -39,7 +39,9 @@ $endDate = Time.now.utc.iso8601
 ```
 
 ## Usage
+
 ###SEM
+
 ```ruby
 require 'baidu'
 

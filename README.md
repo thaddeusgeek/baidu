@@ -39,16 +39,21 @@ $endDate = Time.now.utc.iso8601
 ```
 
 ## Usage
+###SEM
 ```ruby
 require 'baidu'
+
+$auth = Baidu::Auth.new
+$auth.username = 'username'
+$auth.password = 'password'
+$auth.token = 'token'
+
 ss = Baidu::SEM::SearchService.new
-ss.username = ''
-ss.password = ''
-ss.token = ''
-ss.debug = false
 res = ss.getKeywordBySearch({:searchWord=>'word',:searchType=>0})
+res = ss.getKeywordBySearch({:searchWord=>'word',:searchType=>0},true) #debug=true
 ```
 
+###MAP
 ```
 返回码 定义 英文返回描述
 0 正常 ok

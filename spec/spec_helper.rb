@@ -249,7 +249,7 @@ class ApiResponse
     def changed_adgroup_ids(changed_adgroup_ids)
       if changed_adgroup_ids.is_a?Array
         changed_adgroup_ids.each do |changed_adgroup_id|
-          changed_adgroup_id(changed_keyword_id)
+          changed_adgroup_id(changed_adgroup_id)
         end
       elsif changed_adgroup_ids.is_a?Hash
         changed_adgroup_id(changed_adgroup_ids)
@@ -259,16 +259,19 @@ class ApiResponse
     end
 
     def changed_adgroup_id(changed_adgroup_id)
-      raise "changed_adgroup_ids:#{changed_adgroup_ids}" unless changed_adgroup_ids.has_key?(:adgroup_id) and changed_adgroup_ids.has_key?(:operator)
+      raise "changed_adgroup_id:#{changed_adgroup_id}" unless changed_adgroup_id.has_key?(:adgroup_id) and changed_adgroup_id.has_key?(:operator)
       verify(changed_adgroup_id)
     end
 
     def changed_keyword_ids(changed_keyword_ids)
+      p changed_keyword_ids
       if changed_keyword_ids.is_a?Array
         changed_keyword_ids.each do |changed_keyword_id|
+          p changed_keyword_id
           changed_keyword_id(changed_keyword_id)
         end
       elsif changed_keyword_ids.is_a?Hash
+        # p changed_keyword_ids
         changed_keyword_id(changed_keyword_ids)
       else
         raise "changed_keyword_ids:#{changed_keyword_ids}"

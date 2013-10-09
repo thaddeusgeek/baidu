@@ -4,6 +4,7 @@ module Baidu
   module SEM
   end
 end
+
 class String
   def snake_case
     self.gsub(/::/, '/').
@@ -55,5 +56,6 @@ require "baidu/map"
 require "baidu/sem"
 require "baidu/rank"
 require "baidu/auth"
+require "baidu/response"
 require "ext"
 require "awesome_print"

@@ -109,7 +109,7 @@ describe Baidu::SEM::AdgroupService do
       response.rquota.should > 0
       # ap response.body
       expect{ApiResponse.verify(response.body)}.not_to raise_error
-      ap response.body
+      # ap response.body
       # it "is not implemented yet" do
       #   pending("this is pending before we have testing-purpose account")
       # end

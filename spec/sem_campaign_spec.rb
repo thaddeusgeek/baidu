@@ -35,7 +35,6 @@ describe Baidu::SEM::CampaignService do
       sleep 2
       options = {:campaignTypes => [campaign_type_update]}
       response = subject.updateCampaign(options)
-      ap response.body
       response.status.should == 0
       response.desc.should == 'success'
       response.quota.should == 2

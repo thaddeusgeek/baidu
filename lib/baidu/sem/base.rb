@@ -19,7 +19,27 @@ module Baidu
         options = {} if options.nil?
         name = name.to_s
         name_snake = name.snake_case
-        name_request_sym = (name+'Request').to_sym #if %w(getCampaignByCampaignId getAllCampaign addCampaign updateCampaign deleteCampaign).include?name
+        # p name
+        name_tmp =
+        case name
+          when 'getAllCampaign'
+            'GetAllCampaign'
+          when 'getCampaignByCampaignId'
+            'GetCampaignByCampaignId'
+          when 'addCampaign'
+            'AddCampaign'
+          when 'updateCampaign'
+            'UpdateCampaign'
+          when 'deleteCampaign'
+            'DeleteCampaign'
+          when 'getCampaignByCampaignId'
+            'GetCampaignByCampaignId'
+          else
+            name
+        end
+
+        name_request_sym = (name_tmp+'Request').to_sym #if %w(getCampaignByCampaignId getAllCampaign addCampaign updateCampaign deleteCampaign).include?name
+        # puts name_request_sym
         name_response_sym = (name+'Response').snake_case.to_sym
         operation = make_operation(name)
         operation.header = operation_header
@@ -34,8 +54,7 @@ module Baidu
         if response.failures
           raise response.failures.to_s
         else
-          response.body = response.body[name_response_sym]
-          response
+          Baidu::Response.new(response,name_response_sym)
         end
       end
       def operations
@@ -69,9 +88,9 @@ module Baidu
         end
       end
 
-      def invalid_options?(options,necessary_options)
-        return true if necessary_options.any?{|necessary_option|!options.has_key?necessary_option}
-      end
+      # def invalid_options?(options,necessary_options)
+      #   return true if necessary_options.any?{|necessary_option|!options.has_key?necessary_option}
+      # end
     end
   end
 end

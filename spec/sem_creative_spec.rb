@@ -3,7 +3,7 @@ require 'uri'
 describe Baidu::SEM::CreativeService do
   subject{Baidu::SEM::CreativeService.new($auth)}
   let(:new_title){'新测试创意标题'}
-  it '#addCreative #updateCreative #deleteCreative #getCreativeByCreativeId' do
+  it '#addCreative #updateCreative #getCreativeByCreativeId #deleteCreative' do
     #addCreative
     creativeType = {
       :adgroupId => $adgroup_id,

@@ -2,6 +2,7 @@ require 'baidu'
 require 'time'
 #请根据自己实际情况填写
 BAIDU_MAP_KEY = '' #百度地图TOKEN
+BAIDU_TRANSLATE_KEY = '' #百度翻译APIKEY
 $searchWord = '' #根据Word查已投放关键词
 $searchAdgroupName = '' #根据Adgroup查已投放的单元
 $searchCampaignName = '' #根据Campaign查已投放的计划

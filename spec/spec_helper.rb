@@ -1,24 +1,32 @@
 require 'baidu'
 require 'time'
 #请根据自己实际情况填写
-BAIDU_MAP_KEY = '46E9167407189d7658f392fb222b7b36' #百度地图TOKEN
-$searchWord = '酒店' #根据Word查已投放关键词
-$searchAdgroupName = 'brand_e-_Hotel$' #根据Adgroup查已投放的单元
-$searchCampaignName = 'brand_hotel' #根据Campaign查已投放的计划
-$username = 'baidu-elong-brand530824' #账户 id=13
-$password = 'Elong_group2' #密码
-$token = '4864a729cbf42c01ed0f1cb88fcc15bb' #token
+BAIDU_MAP_KEY = '' #百度地图TOKEN
+$searchWord = '' #根据Word查已投放关键词
+$searchAdgroupName = '' #根据Adgroup查已投放的单元
+$searchCampaignName = '' #根据Campaign查已投放的计划
+$username = '' #账户 id=13
+$password = '' #密码
+$token = '' #token
 $auth = Baidu::Auth.new
 $auth.username = $username
 $auth.password = $password
 $auth.token = $token
-$debug = false #需要调试时打开
-$portfolio_ids = %w(1941290) #帐号id pid =13
-$campaign_ids = %w(1885994) #计划id
-$adgroup_ids = %w(6722843 6732645 6732669 6732660 6698065 6698044 6732657 6732651 6722810 6722789) #单元id campaignid =197(1885994)
-$keyword_ids = %w(228056089 228056083 228056092 228056086) #关键词id adgroupid = 4638(6722843)
 $startDate = (Time.now - 24*3600).utc.iso8601
 $endDate = Time.now.utc.iso8601
+$pcDestinationUrl = 'http://www.elong.com/'
+$mobileDestinationUrl = 'http://www.elong.com/'
+
+
+cs = Baidu::SEM::CampaignService.new($auth)
+campaigns = cs.getAllCampaign
+campaign = campaigns.body[:campaign_types].first
+$campaign_id = campaign[:campaign_id]
+$campaign_name = campaign[:campaign_name]
+
+ac = Baidu::SEM::AdgroupService.new($auth)
+adgroups = ac.getAdgroupIdByCampaignId({:campaignIds=>[$campaign_id]})
+$adgroup_id = adgroups.body[:campaign_adgroup_ids][:adgroup_ids].first
 
 class ApiResponse
   class << self
@@ -29,6 +37,41 @@ class ApiResponse
         send(k,v)
       end
     end
+    def changed_creative_ids(changed_creative_ids)
+    end
+    def creative_types(creative_types)
+    end
+    def result(result)
+    end
+
+    def campaign_types(campaign_types)
+    end
+    def money(money)
+      raise "money:#{money}" unless money =~ /\d+\.\d{2}/
+    end
+    alias :balance :money
+    alias :cost :money
+    alias :payment :money
+
+    def budget(budget)
+    end
+
+    alias :budget_type :budget
+
+    def region_target(region_target)
+    end
+
+    def open_domains(open_domains)
+    end
+
+    def reg_domain(reg_domain)
+    end
+
+    def account_info_type(account_info_type)
+      raise "account_info_type:#{account_info_type}" if %w(userid balance cost payment budget_type budget region_target open_domains reg_domain).any?{|key|!account_info_type.has_key?key.to_sym}
+      verify(account_info_type)
+    end
+
     def scale(scale)
       raise "scale:#{scale}" unless scale.size == 2 and scale.is_a?Array
     end
@@ -84,9 +127,14 @@ class ApiResponse
     end
 
     def campaign_adgroup_ids(campaign_adgroup_ids)
-      raise "campaign_adgroup_ids:#{campaign_adgroup_ids}" unless campaign_adgroup_ids.is_a?Array
-      campaign_adgroup_ids.each do |campaign_adgroup_id|
-        campaign_adgroup_id(campaign_adgroup_id)
+      if campaign_adgroup_ids.is_a?Array
+        campaign_adgroup_ids.each do |campaign_adgroup_id|
+          campaign_adgroup_id(campaign_adgroup_id)
+        end
+      elsif campaign_adgroup_ids.is_a?Hash
+        campaign_adgroup_id(campaign_adgroup_ids)
+      else
+        raise "campaign_adgroup_ids:#{campaign_adgroup_ids}"
       end
     end
 
@@ -153,6 +201,7 @@ class ApiResponse
     alias :adgroup_id :id
     alias :keyword_id :id
     alias :item_id :id
+    alias :userid :id
 
     def name(name)
       raise "name:#{name}" unless name =~ /.+/
@@ -264,10 +313,8 @@ class ApiResponse
     end
 
     def changed_keyword_ids(changed_keyword_ids)
-      p changed_keyword_ids
       if changed_keyword_ids.is_a?Array
         changed_keyword_ids.each do |changed_keyword_id|
-          p changed_keyword_id
           changed_keyword_id(changed_keyword_id)
         end
       elsif changed_keyword_ids.is_a?Hash

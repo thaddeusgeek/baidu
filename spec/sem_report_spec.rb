@@ -1,34 +1,54 @@
 require 'spec_helper'
 describe Baidu::SEM::ReportService do
   subject{Baidu::SEM::ReportService.new($auth)}
-    before :each do
-      @options = {}
-      @options[:performanceData] = [Baidu::SEM::PerformanceData::IMPRESSION, Baidu::SEM::PerformanceData::CLICK, Baidu::SEM::PerformanceData::CPC]
-      @options[:startDate] = (Time.now - 24*3600).utc.iso8601
-      @options[:endDate] = Time.now.utc.iso8601
-      @options[:statIds] = $campaign_ids
-      @options[:levelOfDetails] = Baidu::SEM::LevelOfDetails::CAMPAIGN
-      @options[:reportType] = Baidu::SEM::ReportType::CAMPAIGN
-    end
+    # before :each do
+    # end
 
-    # describe "ReportService#getProfessionalReportId" do
-    #   @report_id = nil
-    it "返回的id必须是32位数字和小写字母组合" do
-      pending('need to rewrite')
-      response = subject.getProfessionalReportId({:reportRequestType => @options}).body
-      expect{ApiResponse.verify(response)}.not_to raise_error
-      # report_id.class.should == String
-      # report_id.should =~ /^[a-z0-9]{32}$/
-    end
+    it 'should not raise error on #getProfessionalReportId #getReportState #getReportFileUrl series test' do
+      #getProfessionalReportId
+      options = {
+        :performanceData => [Baidu::SEM::PerformanceData::IMPRESSION, Baidu::SEM::PerformanceData::CLICK, Baidu::SEM::PerformanceData::CPC],
+        :startDate => (Time.now - 24*3600).utc.iso8601,
+        :endDate => Time.now.utc.iso8601,
+        :statIds => [$campaign_id],
+        :levelOfDetails => Baidu::SEM::LevelOfDetails::CAMPAIGN,
+        :reportType => Baidu::SEM::ReportType::CAMPAIGN
+      }
+      response = subject.getProfessionalReportId({:reportRequestType => options})
+      response.status.should == 0
+      response.desc.should == 'success'
+      response.quota.should == 2
+      response.rquota.should > 0
+      expect{ApiResponse.verify(response.body)}.not_to raise_error
 
-    it "处理未过期有效id(1小时内产生的）应返回ReportState中的枚举值" do
-      pending('need to rewrite')
-      response = subject.getProfessionalReportId({:reportRequestType => @options}).body
-      report_id = response[:report_id]
-      response = subject.getReportState({:reportId=>report_id}).body
-      expect{ApiResponse.verify(response)}.not_to raise_error
-      # report_state = response[:report_state]
-      # [Baidu::SEM::ReportState::PENDING,ReportState::DOING,ReportState::DONE].should include report_state
+      #parse report_id
+      report_id = response.body[:report_id]
+
+      #getReportState
+      try_count = 0
+      loop do
+        response = subject.getReportState({:reportId => report_id})
+        response.status.should == 0
+        response.desc.should == 'success'
+        response.quota.should == 2
+        response.rquota.should > 0
+        expect{ApiResponse.verify(response.body)}.not_to raise_error
+        #verify is_generated status
+        is_generated = response.body[:is_generated]
+        break if is_generated == '3' or try_count > 10
+        sleep 1
+        try_count +=1
+      end
+
+
+      #getReportFileUrl
+      response = subject.getReportFileUrl({:reportId => report_id})
+      response.status.should == 0
+      response.desc.should == 'success'
+      response.quota.should == 2
+      response.rquota.should > 0
+      expect{ApiResponse.verify(response.body)}.not_to raise_error
+
     end
 
     it "处理过期/无效id,应返回false" do

@@ -12,7 +12,6 @@ module Baidu
         @password = auth.password
         @token = auth.token
         @client = Savon.new("https://api.baidu.com/sem/sms/v3/#{classname}?wsdl")
-        # Savon.new(@base_uri+service_name+'?wsdl')
       end
       def method_missing(name, *args, &block)
         options,debug = args[0],args[1]
@@ -39,7 +38,6 @@ module Baidu
         end
 
         name_request_sym = (name_tmp+'Request').to_sym #if %w(getCampaignByCampaignId getAllCampaign addCampaign updateCampaign deleteCampaign).include?name
-        # puts name_request_sym
         name_response_sym = (name+'Response').snake_case.to_sym
         operation = make_operation(name)
         operation.header = operation_header
@@ -50,12 +48,7 @@ module Baidu
         puts operation.build if debug
         response = operation.call
         ap response if debug
-        # ap response.failures if debug
-        if response.failures
-          raise response.failures.to_s
-        else
-          Baidu::Response.new(response,name_response_sym)
-        end
+        Baidu::Response.new(response,name_response_sym)
       end
       def operations
         @client.operations(@service_name,@port_name)
@@ -88,9 +81,6 @@ module Baidu
         end
       end
 
-      # def invalid_options?(options,necessary_options)
-      #   return true if necessary_options.any?{|necessary_option|!options.has_key?necessary_option}
-      # end
     end
   end
 end

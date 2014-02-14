@@ -76,11 +76,15 @@ Baidumap.get_cityid('北京') #=>131
 
 ##Documents
 
+
 ###RankingService
+
 
 ####方法
 
+
 #####getPreview
+
 
 Request: GetPreviewRequest
 

@@ -63,7 +63,7 @@ MAP
 #2xx 无权限
 #3xx 配额错误
 puts map.get_xy_by_poiname('滨海公园','上海')
-map = Baidumap.new('key')
+map = Baidu::Map.new('key')
 require 'awesome_print'
 lat = 40.3377039331399
 lng = 116.647588831718

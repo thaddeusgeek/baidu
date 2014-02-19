@@ -1,5 +1,6 @@
 require "baidu"
 require "baidu/sem/base"
+require "baidu/sem/enum"
 require "baidu/sem/rank"
 require "baidu/sem/report"
 require "baidu/sem/account"

@@ -91,7 +91,7 @@ module Baidu
     end
           private
       def make_query(segments)
-        URI.encode(segments.map{|k,v|"#{k}=#{v}"}.join('&')),
+        URI.encode(segments.map{|k,v|"#{k}=#{v}"}.join('&'))
       end
     end
   end

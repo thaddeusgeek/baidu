@@ -1,5 +1,4 @@
 require "baidu/version"
-require "baidu/map"
 require "baidu/translate"
 require "baidu/sem"
 require "baidu/auth"
